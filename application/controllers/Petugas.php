@@ -9,6 +9,7 @@ class Petugas extends CI_Controller {
         $this->load->model('admin_model', 'admin');
         $this->load->model('pengajuan_model', 'pengajuan');
         is_petugas();
+		is_login();
 	}
 
 	public function index()
@@ -23,6 +24,13 @@ class Petugas extends CI_Controller {
 		$data['total_pengajuan_diterima'] = $this->admin->getTotalPengajuanDiterima();
 		$data['total_pengajuan_ditolak'] = $this->admin->getTotalPengajuanDitolak();
 		$this->load->view('template/template_petugas', $data);
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+        session_destroy();
+        redirect(base_url());
 	}
 
     public function profil()

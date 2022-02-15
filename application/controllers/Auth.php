@@ -7,6 +7,7 @@ class Auth extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('auth_model', 'auth');
+		is_login(true);
 	}
 
     public function index()
@@ -33,6 +34,7 @@ class Auth extends CI_Controller {
 				if(hashEncryptVerify($password, $user['password']) == TRUE){
 					$this->session->set_userdata($user);
 					$this->session->set_userdata('auth', TRUE);
+					$this->session->set_userdata('is_login', TRUE);
 					
 					if($user['role_id'] == 1){
 						$this->session->set_flashdata('hello', 'Selamat Datang!');						
@@ -55,13 +57,6 @@ class Auth extends CI_Controller {
 				redirect('auth');
 			}
 		}
-	}
-
-	public function logout()
-	{
-		$this->session->sess_destroy();
-			
-		redirect('auth');
 	}
 
 	public function register()

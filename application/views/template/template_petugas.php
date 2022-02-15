@@ -54,11 +54,8 @@
               <a href="<?= site_url('petugas/profil') ?>" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
-              <a href="<?= site_url('setting') ?>" class="dropdown-item has-icon">
-                <i class="fas fa-cog"></i> Settings
-              </a>
               <div class="dropdown-divider"></div>
-              <a href="<?= base_url('auth/logout') ?>" class="dropdown-item has-icon text-danger">
+              <a href="<?= base_url('petugas/logout') ?>" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>

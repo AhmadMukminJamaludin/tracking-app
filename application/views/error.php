@@ -38,7 +38,7 @@
             </div>
             <div class="page-search">
               <div class="mt-3">
-                <a href="<?= site_url('auth') ?>">Back to Sign In</a>
+                <a href="<?= site_url('user/logout') ?>">Back to Sign In</a>
               </div>
             </div>
           </div>

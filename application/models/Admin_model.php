@@ -245,4 +245,16 @@ class Admin_model extends CI_Model {
         $this->db->update('data_nasabah', $data, ['user_id' => $id]);
         return $this->db->affected_rows();
     }
+
+    public function editFormDataPekerjaan($id, $data)
+    {
+        $this->db->update('data_pekerjaan', $data, ['user_id' => $id]);
+        return $this->db->affected_rows();
+    }
+
+    public function editFormDataPribadiNasabah($id, $data)
+    {
+        $this->db->update('data_pribadi_nasabah', $data, ['user_id' => $id]);
+        return $this->db->affected_rows();
+    }
 }

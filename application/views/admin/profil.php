@@ -20,7 +20,17 @@
                   </div>
                   <div class="profile-widget-description">
                     <div class="profile-widget-name"><?= $data_user['name'] ?> <div class="text-muted d-inline font-weight-normal"><div class="slash"></div> Web Developer</div></div>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum error eveniet mollitia accusantium atque corporis at? Repudiandae ad odio, deleniti optio, iusto aperiam repellendus nulla facere cumque, eum iure rerum?.
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header">
+                    <h4>sepenggal kalimat</h4>
+                  </div>
+                  <div class="card-body">
+                    <blockquote class="blockquote">
+                      <p class="mb-0">Apapun yang menjadi takdirmu pasti akan mencari jalannya sendiri untuk menemukanmu.</p>
+                      <footer class="blockquote-footer">Ali bin Abi Thalib</footer>
+                    </blockquote>
                   </div>
                 </div>
               </div>

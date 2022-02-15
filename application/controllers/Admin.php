@@ -8,6 +8,7 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		$this->load->model('admin_model', 'admin');
 		is_admin();
+		is_login();
 	}
 
 	public function index()
@@ -22,6 +23,13 @@ class Admin extends CI_Controller {
 		$data['title'] = 'Tracking-APP';
 		$data['page'] = 'admin/dashboard';
 		$this->load->view('template/template_admin', $data);
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+        session_destroy();
+        redirect(base_url());
 	}
 
 	public function profil()
@@ -368,7 +376,7 @@ class Admin extends CI_Controller {
 
 		if($this->form_validation->run() == FALSE){
 			$this->session->set_flashdata('error', 'Data nasabah gagal diperbarui, silahkan lengkapi formulir!');
-			redirect(base_url('admin/all_pengajuan'));
+			redirect(base_url('admin/edit_data_nasabah/'.$id));
 		} else {
 			$id = $this->input->post('user_id');
 			$data = [
@@ -388,7 +396,92 @@ class Admin extends CI_Controller {
 			];
 			$this->admin->editFormDataNasabah($id, $data);
 			$this->session->set_flashdata('success', 'Data nasabah berhasil diperbarui!'); 
-			redirect(base_url('admin/all_pengajuan'));
+			redirect(base_url('admin/edit_data_nasabah/'.$id));
+		}
+	}
+
+	public function edit_data_pekerjaan($id)
+	{
+		$id_users = $this->session->userdata('id_users');
+		$user = $this->admin->getDataUser($id_users);
+		$data['data_user'] = $user;
+		$data['title'] = 'Permohonan Kredit';
+		$data['page'] = 'admin/edit_data_pekerjaan';
+		$data['data_pekerjaan'] = $this->admin->getUserDatapekerjaan($id);
+		$this->load->view('template/template_admin', $data);
+	}
+
+	public function edit_form_data_pekerjaan()
+	{
+		$this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'required|trim',[
+			'required' => 'Pekerjaan tidak boleh kosong.'
+		]);
+		$this->form_validation->set_rules('nama_perusahaan', 'Nama perusahaan', 'required|trim',[
+			'required' => 'Nama perusahaan tidak boleh kosong.'
+		]);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', 'Data pekerjaan gagal diperbarui, silahkan lengkapi formulir!');
+			redirect(base_url('admin/edit_data_pekerjaan/'.$id));
+		} else {
+			$id = $this->input->post('user_id');
+			$data = [	
+				'pekerjaan'			=> $this->input->post('pekerjaan'),
+				'bd_usaha'			=> $this->input->post('bd_usaha'),
+				'nama_perusahaan'	=> $this->input->post('nama_perusahaan'),
+				'tahun'				=> $this->input->post('tahun'),
+				'bulan'				=> $this->input->post('bulan'),
+				'penghasilan'		=> $this->input->post('penghasilan'),
+			];
+			$this->admin->editFormDataPekerjaan($id, $data);
+			$this->session->set_flashdata('success', 'Data nasabah berhasil diperbarui, silahkan isi formulir data pekerjaan!'); 
+			redirect(base_url('admin/edit_data_pekerjaan/'.$id));
+		}
+	}
+
+	public function edit_data_pribadi_nasabah($id)
+	{
+		$id_users = $this->session->userdata('id_users');
+		$user = $this->admin->getDataUser($id_users);
+		$data['data_user'] = $user;
+		$data['title'] = 'Permohonan Kredit';
+		$data['page'] = 'admin/edit_data_pribadi_nasabah';
+		$data['data_pribadi_nasabah'] = $this->admin->getUserDatapribadiNasabah($id);
+		$this->load->view('template/template_admin', $data);
+	}
+
+	public function edit_form_data_pribadi_nasabah()
+	{
+		$this->form_validation->set_rules('name', 'Name', 'required|trim',[
+			'required' => 'Pekerjaan tidak boleh kosong.'
+		]);
+		$this->form_validation->set_rules('no_ktp', 'Nomer KTP', 'required|trim',[
+			'required' => 'Nomer KTP tidak boleh kosong.'
+		]);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', 'Data pribadi nasabah gagal diperbarui, silahkan lengkapi formulir!');
+			redirect(base_url('admin/edit_data_pribadi_nasabah/'.$id));
+		} else {
+			$id = $this->input->post('user_id');
+			$data = [
+				'name'				=> $this->input->post('name'),
+				'tempat_lahir'		=> $this->input->post('tempat_lahir'),
+				'tanggal_lahir'		=> $this->input->post('tanggal_lahir'),
+				'no_ktp'			=> $this->input->post('no_ktp'),
+				'alamat_identitas'	=> $this->input->post('alamat_identitas'),
+				'alamat_terkini'	=> $this->input->post('alamat_terkini'),
+				'kepemilikan_rumah'	=> $this->input->post('kepemilikan_rumah'),
+				'tahun'				=> $this->input->post('tahun'),
+				'bulan'				=> $this->input->post('bulan'),
+				'pendidikan'		=> $this->input->post('pendidikan'),
+				'nama_suamiistri'	=> $this->input->post('nama_suamiistri'),
+				'nama_gadis_ibu_kandung'				=> $this->input->post('nama_gadis_ibu_kandung'),
+				'jumlah_tanggungan'	=> $this->input->post('jumlah_tanggungan'),
+			];
+			$this->admin->editFormDataPribadiNasabah($id, $data);
+			$this->session->set_flashdata('success', 'Data nasabah berhasil diperbarui, silahkan isi formulir data pekerjaan!'); 
+			redirect(base_url('admin/edit_data_pribadi_nasabah/'.$id));
 		}
 	}
 	

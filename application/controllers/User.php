@@ -7,6 +7,7 @@ class User extends CI_Controller {
 	{
 		parent::__construct();
         $this->load->model('user_model', 'user');
+		is_login();
 	}
 
 	public function index()
@@ -17,6 +18,13 @@ class User extends CI_Controller {
 		$data['title'] = 'Tracking-APP';
 		$data['page'] = 'user/dashboard';
 		$this->load->view('template/template_user', $data);
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+        session_destroy();
+        redirect(base_url());
 	}
 
 	public function profil()

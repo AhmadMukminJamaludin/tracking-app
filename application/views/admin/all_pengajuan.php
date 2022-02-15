@@ -91,4 +91,23 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_qrcode<?= $key['user_id'] ?>">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Kode QR Berkas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="row d-flex justify-content-center mb-3">
+                    <img src="<?php echo base_url('pengajuan/ciqrcode/'. $kode=$key['qrcode']); ?>" alt="" data-toggle="tooltip" title="<?= $key['qrcode'] ?>">
+                </div>
+                <span class="badge badge-info"><?= $key['qrcode'] ?></span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php endforeach ?>

@@ -152,6 +152,7 @@
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                             <div class="col-sm-12 col-md-7">
                                 <button class="btn btn-primary btn-lg btn-icon icon-left"><i class="far fa-paper-plane"></i> Save Changes</button>
+                                <a href="<?= site_url('admin/edit_data_pekerjaan/'. $data_nasabah['user_id']) ?>" class="btn btn-info btn-lg btn-icon icon-left"><i class="fas fa-briefcase"></i> Data pekerjaan</a>
                             </div>
                         </div>
                     </form>

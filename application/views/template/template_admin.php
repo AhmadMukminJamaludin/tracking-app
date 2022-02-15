@@ -58,7 +58,7 @@
                 <i class="fas fa-cog"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="<?= base_url('auth/logout') ?>" class="dropdown-item has-icon text-danger">
+              <a href="<?= base_url('admin/logout') ?>" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>
@@ -200,10 +200,10 @@
   var myChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
     datasets: [{
-      label: 'Statistics',
-      data: [460, 458, 330, 502, 430, 610, 488],
+      label: 'Permohonan',
+      data: [460, 458, 330, 502, 430, 610, 488, 100, 120, 123, 78, 134],
       borderWidth: 2,
       backgroundColor: '#6777ef',
       borderColor: '#6777ef',
@@ -271,7 +271,7 @@ var myChart = new Chart(ctx, {
   options: {
     responsive: true,
     legend: {
-      position: 'bottom',
+      position: 'right',
     },
   }
 });

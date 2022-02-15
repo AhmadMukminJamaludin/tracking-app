@@ -8,6 +8,8 @@ class Pengajuan extends CI_Controller {
 		parent::__construct();
         $this->load->model('admin_model', 'admin');
         $this->load->model('pengajuan_model', 'pengajuan');
+		$this->load->library('ciqrcode');
+		is_login();
 	}
 
 	public function index()
@@ -54,7 +56,7 @@ class Pengajuan extends CI_Controller {
 				} else {
 					$row[] = '<a href="'.base_url('./berkas/'.$field->scan_berkas).'" download class="btn btn-icon icon-left btn-primary"><i class="fas fa-file-download"></i> Download</a>';					
 				}
-                $row[] = '<a href="'.base_url('pengajuan/detail_pengajuan_user/'. $field->id_users).'" class="btn btn-icon icon-left btn-info"><i class="fas fa-info-circle"></i> Detail</a> <a href="#" data-toggle="modal" data-target="#modal_ubah_pengajuan'.$field->id_users.'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Ubah Status Pengajuan</a> <a href="'.base_url('admin/edit_data_nasabah/'. $field->id_users).'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Edit</a> <a href="#" onclick="" class="btn btn-icon icon-left btn-danger"><i class="fas fa-times"></i> Hapus</a>';
+                $row[] = '<a href="'.base_url('pengajuan/detail_pengajuan_user/'. $field->id_users).'" class="btn btn-icon icon-left btn-info"><i class="fas fa-info-circle"></i> Detail</a> <a href="#" data-toggle="modal" data-target="#modal_qrcode'.$field->id_users.'" class="btn btn-icon icon-left btn-info"><i class="fas fa-qrcode"></i> Qrcode</a> <a href="#" data-toggle="modal" data-target="#modal_ubah_pengajuan'.$field->id_users.'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Ubah Status Pengajuan</a> <a href="'.base_url('admin/edit_data_nasabah/'. $field->id_users).'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Edit</a> <a href="#" onclick="" class="btn btn-icon icon-left btn-danger"><i class="fas fa-times"></i> Hapus</a>';
                 $data[] = $row;
             }
 
@@ -113,5 +115,16 @@ class Pengajuan extends CI_Controller {
 		}
 
         redirect(base_url('admin/all_pengajuan'));
+    }
+
+	public function ciqrcode($kode)
+    {
+        qrcode::png(
+            $kode,
+            $outfile = false,
+            $level = QR_ECLEVEL_H,
+            $size = 6,
+            $margin = 1
+        );
     }
 }
