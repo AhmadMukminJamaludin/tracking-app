@@ -87,9 +87,11 @@
               <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-archive"></i><span>Data</span></a>
                 <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="<?= site_url('admin/all_pegawai') ?>">Pegawai</a></li>
                   <li><a class="nav-link" href="<?= site_url('admin/all_pengguna') ?>">Nasabah</a></li>
                   <li><a class="nav-link" href="<?= site_url('admin/all_divisi') ?>">Divisi</a></li>
                   <li><a class="nav-link" href="<?= site_url('admin/all_pengajuan') ?>">Pengajuan</a></li>
+                  <li><a class="nav-link" href="<?= site_url('admin/all_berkas') ?>">Kode Berkas</a></li>
                 </ul>
               </li>
               <li class="menu-header">Pengajuan Kredit</li>
@@ -100,7 +102,7 @@
                   <li><a class="nav-link" href="<?= site_url('admin/all_pengajuan') ?>">Progres Pengajuan</a></li>
                 </ul>
               </li>
-              <li><a class="nav-link" href="<?= base_url('setting') ?>"><i class="fas fa-cogs"></i> <span>Pengaturan</span></a></li>
+              <!-- <li><a class="nav-link" href="<?= base_url('setting') ?>"><i class="fas fa-cogs"></i> <span>Pengaturan</span></a></li> -->
           </ul>
         </aside>
       </div>
@@ -165,6 +167,26 @@
       }],
     });
 
+    $("#tabel_pegawai").dataTable({
+      "responsive" : true,
+      "destroy": true,
+      "processing": true,
+      "serverSide": true,
+      "order": [],
+
+      "ajax": {
+          "url": "<?= site_url('admin/ambilAllPegawai') ?>",
+          "type": "POST"
+      },
+
+
+      "columnDefs": [{
+          "targets": [0],
+          "orderable": false,
+          "width": 6
+      }],
+    });
+
     $("#tabel_all_pengajuan").dataTable({
       "responsive" : true,
       "destroy": true,
@@ -203,7 +225,7 @@
     labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
     datasets: [{
       label: 'Permohonan',
-      data: [460, 458, 330, 502, 430, 610, 488, 100, 120, 123, 78, 134],
+      data: <?= '['.$januari.','.$februari.','.$maret.','.$april.','.$mei.','.$juni.','.$juli.','.$agustus.','.$september.','.$oktober.','.$november.','.$desember.']' ?>,
       borderWidth: 2,
       backgroundColor: '#6777ef',
       borderColor: '#6777ef',
@@ -224,12 +246,12 @@
         },
         ticks: {
           beginAtZero: true,
-          stepSize: 150
+          stepSize: 10
         }
       }],
       xAxes: [{
         ticks: {
-          display: false
+          display: true
         },
         gridLines: {
           display: false
@@ -245,33 +267,24 @@ var myChart = new Chart(ctx, {
   data: {
     datasets: [{
       data: [
-        80,
-        50,
-        40,
-        30,
-        100,
+        <?= $total_pengajuan_diterima ?>,
+        <?= $total_pengajuan_ditolak ?>
       ],
       backgroundColor: [
-        '#191d21',
-        '#63ed7a',
-        '#ffa426',
-        '#fc544b',
-        '#6777ef',
+        '#6EBF8B',
+        '#D82148',
       ],
       label: 'Dataset 1'
     }],
     labels: [
-      'Black',
-      'Green',
-      'Yellow',
-      'Red',
-      'Blue'
+      'Pengajuan diterima',
+      'Pengajuan ditolak'
     ],
   },
   options: {
     responsive: true,
     legend: {
-      position: 'right',
+      position: 'right'
     },
   }
 });

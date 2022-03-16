@@ -18,6 +18,10 @@
                 </div>
             </div>
             </div>
+            <div class="col-lg-12 d-flex justify-content-center mt-3">
+                <img src="<?= base_url('assets/img/deposit.jpg') ?>" alt="" width="50%">
+                <img src="<?= base_url('assets/img/kredit.jpeg') ?>" alt="" width="50%">
+            </div>
         </div>
     </div>
     </section>

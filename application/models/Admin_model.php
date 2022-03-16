@@ -42,6 +42,42 @@ class Admin_model extends CI_Model {
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
+
+    private function _get_datatablesPegawai_query()
+    {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->join('divisi', 'divisi.id_divisi = users.divisi');
+        $this->db->where('role_id', 3);
+
+        $i = 0;
+
+        foreach ($this->column_search as $item) // looping awal
+        {
+            if ($_POST['search']['value']) // jika datatable mengirimkan pencarian dengan metode POST
+            {
+
+                if ($i === 0) // looping awal
+                {
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
     private function _get_datatables_query_allPengajuan()
     {
         $this->db->select('*');
@@ -122,8 +158,31 @@ class Admin_model extends CI_Model {
         return $this->db->count_all_results();
     }
 
+    function get_datatables_allPegawai()
+    {
+        $this->_get_datatablesPegawai_query();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filteredPegawai()
+    {
+        $this->_get_datatablesPegawai_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_allPegawai()
+    {
+        $this->db->from('users');
+        return $this->db->count_all_results();
+    }
+
     public function getDataUser($id)
     {
+        $this->db->join('divisi', 'divisi.id_divisi = users.divisi');
         return $this->db->get_where('users', ['id_users' => $id])->row_array();
     }
 
@@ -155,6 +214,11 @@ class Admin_model extends CI_Model {
         return $this->db->get('divisi')->result();
     }
 
+    public function getAllDivisi()
+    {
+        return $this->db->get('divisi')->result_array();
+    }
+
     public function addDivisi($data)
     {
         $this->db->insert('divisi', $data);
@@ -179,6 +243,11 @@ class Admin_model extends CI_Model {
     
 
     public function addNasabah($data)
+    {
+        $this->db->insert('users', $data);
+    }
+
+    public function addPegawai($data)
     {
         $this->db->insert('users', $data);
     }
@@ -257,4 +326,118 @@ class Admin_model extends CI_Model {
         $this->db->update('data_pribadi_nasabah', $data, ['user_id' => $id]);
         return $this->db->affected_rows();
     }
+
+    public function getKodeBerkas()
+    {
+        return $this->db->get('kode_berkas')->result();
+    }
+
+    public function getAllKodeBerkas()
+    {
+        return $this->db->get('kode_berkas')->result_array();
+    }
+
+    public function addKodeBerkas($data)
+    {
+        $this->db->insert('kode_berkas', $data);
+    }
+
+    public function deleteKodeBerkas($id)
+    {
+        $this->db->where('id_kode_berkas', $id);
+        $this->db->delete('kode_berkas');
+    }
+
+    public function getEditKodeBerkas($id)
+    {
+        return $this->db->get_where('kode_berkas', ['id_kode_berkas' => $id])->result();
+    }
+
+    public function editKodeBerkas($id, $data)
+    {
+        $this->db->update('kode_berkas', $data, ['id_kode_berkas' => $id]);
+        return $this->db->affected_rows();
+    }
+
+    public function deletePegawai($id)
+    {
+        $this->db->where('id_users', $id);
+        $this->db->delete('users');
+    }
+
+    public function getEditPegawai($id)
+    {
+        return $this->db->get_where('users', ['id_users' => $id])->result();
+    }
+
+    public function EditPegawai($id, $data)
+    {
+        $this->db->update('users', $data, ['id_users' => $id]);
+        return $this->db->affected_rows();
+    }
+
+    //awal bahan chartjs
+
+    public function getTotal1()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(1),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal2()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(2),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal3()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(3),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal4()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(5),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal5()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(5),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal6()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(6),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal7()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(7),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal8()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(8),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal9()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(9),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal10()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(10),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal11()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(11),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+    public function getTotal12()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date(12),0));
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+
+    //akhir bahan chartjs
 }

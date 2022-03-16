@@ -42,4 +42,16 @@ class Pengajuan_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    public function deletePengajuan($id)
+    {
+        $this->db->where('user_id', $id);
+        $this->db->delete('data_permohonan_kredit');
+    }
+
+    public function ubahQrcodePengajuan($id, $data)
+    {
+        $this->db->update('data_permohonan_kredit', $data, ['user_id' => $id]);
+        return $this->db->affected_rows();
+    }
+
 }

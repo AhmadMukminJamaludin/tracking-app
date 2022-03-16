@@ -18,7 +18,7 @@ class Pengajuan extends CI_Controller {
 		$user = $this->admin->getDataUser($id);
 		$data['data_user'] = $user;
 		$data['title'] = 'Pengajuan Kredit';
-		$data['page'] = 'admin/pengajuan';
+		$data['page'] = 'admin/pengajuan';		
 		$this->load->view('template/template_admin', $data);
 	}
 
@@ -56,7 +56,7 @@ class Pengajuan extends CI_Controller {
 				} else {
 					$row[] = '<a href="'.base_url('./berkas/'.$field->scan_berkas).'" download class="btn btn-icon icon-left btn-primary"><i class="fas fa-file-download"></i> Download</a>';					
 				}
-                $row[] = '<a href="'.base_url('pengajuan/detail_pengajuan_user/'. $field->id_users).'" class="btn btn-icon icon-left btn-info"><i class="fas fa-info-circle"></i> Detail</a> <a href="#" data-toggle="modal" data-target="#modal_qrcode'.$field->id_users.'" class="btn btn-icon icon-left btn-info"><i class="fas fa-qrcode"></i> Qrcode</a> <a href="#" data-toggle="modal" data-target="#modal_ubah_pengajuan'.$field->id_users.'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Ubah Status Pengajuan</a> <a href="'.base_url('admin/edit_data_nasabah/'. $field->id_users).'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Edit</a> <a href="#" onclick="" class="btn btn-icon icon-left btn-danger"><i class="fas fa-times"></i> Hapus</a>';
+                $row[] = '<a href="'.base_url('pengajuan/detail_pengajuan_user/'. $field->id_users).'" class="btn btn-icon icon-left btn-info"><i class="fas fa-info-circle"></i> Detail</a> <a href="#" data-toggle="modal" data-target="#modal_qrcode'.$field->id_users.'" class="btn btn-icon icon-left btn-info"><i class="fas fa-qrcode"></i> Qrcode</a> <a href="#" data-toggle="modal" data-target="#modal_ubah_pengajuan'.$field->id_users.'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Ubah Status Pengajuan</a> <a href="'.base_url('admin/edit_data_nasabah/'. $field->id_users).'" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Edit</a> <a href="#" onclick="hapusPengajuan('.$field->id_users.')" class="btn btn-icon icon-left btn-danger"><i class="fas fa-times"></i> Hapus</a>';
                 $data[] = $row;
             }
 
@@ -127,4 +127,20 @@ class Pengajuan extends CI_Controller {
             $margin = 1
         );
     }
+
+	public function hapus_pengajuan($id)
+	{
+		$this->pengajuan->deletePengajuan($id);
+	}
+
+	public function ubah_qrcode_pengajuan()
+	{
+		$id = $this->input->post('user_id');
+		$data = [
+			'qrcode' => $this->input->post('kode_berkas')
+		];
+		$this->pengajuan->ubahQrcodePengajuan($id, $data);
+		$this->session->set_flashdata('success', 'Kode QR berkas berhasil diperbarui!'); 
+		redirect(base_url('admin/all_pengajuan'));
+	}
 }

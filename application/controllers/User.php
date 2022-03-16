@@ -253,7 +253,7 @@ class User extends CI_Controller {
 		$config['upload_path']          = './berkas/';
 		$config['encrypt_name']          = TRUE;
 		$config['allowed_types']        = 'jpg|jpeg|png|JPG|PNG|JPEG|pdf';
-		$config['max_size']             = 5000;
+		$config['max_size']             = 25000;
 		$config['max_width']            = 10000;
 		$config['max_height']           = 10000;
 
@@ -275,7 +275,7 @@ class User extends CI_Controller {
 	
 			if($this->form_validation->run() == FALSE){
 				$this->session->set_flashdata('error', 'Data permohonan gagal diajukan, silahkan lengkapi formulir!');
-				redirect(base_url('user/data_pribadi_nasabah'));
+				redirect(base_url('user/data_permohonan_kredit'));
 			} else {
 				$data = [
 					'user_id'				=> $this->input->post('user_id'),
@@ -294,7 +294,7 @@ class User extends CI_Controller {
 				];
 				$this->user->addFormDataPermohonanKredit($data, $data1);
 				$this->session->set_flashdata('success', 'Data permohonan berhasil diajukan, silahkan tunggu proses selanjutnya');
-				redirect(base_url('user'));
+				redirect(base_url('user/all_data_permohonan_kredit'));
 			}
 		} else {
 			$scan_berkas = $this->upload->data('file_name');
@@ -335,7 +335,7 @@ class User extends CI_Controller {
 				];
 				$this->user->addFormDataPermohonanKredit($data, $data1);
 				$this->session->set_flashdata('success', 'Data permohonan berhasil diajukan, silahkan tunggu proses selanjutnya');
-				redirect(base_url('user'));
+				redirect(base_url('user/all_data_permohonan_kredit'));
 			}
 		}
 	}

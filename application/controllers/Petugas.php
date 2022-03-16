@@ -40,6 +40,7 @@ class Petugas extends CI_Controller {
 		$data['data_user'] = $user;
 		$data['title'] = 'Halaman profil';
 		$data['page'] = 'petugas/profil';
+		$data['divisi'] = $this->admin->getAllDivisi();
 		$this->load->view('template/template_petugas', $data);
 	}
 
@@ -58,54 +59,61 @@ class Petugas extends CI_Controller {
 		if($this->form_validation->run() == FALSE){
 			redirect(base_url('petugas/profil'));
 		}else{
-			$config['upload_path']          = './images/';
-			$config['encrypt_name']          = TRUE;
-			$config['allowed_types']        = 'jpg|jpeg|png|JPG|PNG|JPEG|pdf';
-			$config['max_size']             = 5000;
-			$config['max_width']            = 10000;
-			$config['max_height']           = 10000;
-
-			$this->load->library('upload', $config);
-
-			if ( ! $this->upload->do_upload('userfile'))
-			{
-				$id = $this->input->post('id');
-				$data = [
-					'nip'		=> $this->input->post('nip'),
-					'name'		=> $this->input->post('name'),
-					'username'	=> $this->input->post('username'),
-					'email' 	=> $this->input->post('email'),
-					'phone' 	=> $this->input->post('phone')
-				];
-				$this->admin->updateProfile($id, $data);
-				$this->session->set_flashdata('success', 'Data profil berhasil diubah'); 
+			if ($this->input->post('divisi')==1) {
+				$this->session->set_flashdata('error', 'Anda tidak dapat mengubah divisi menjadi administrator');
 				redirect(base_url('petugas/profil'));
-			}
-			else
-			{
-				$id = $this->input->post('id');
-				$gambar = $this->upload->data('file_name');
-				if($gambar){
-					// Ambil data user
-					$imageProfile = $this->admin->getDataUser($id);
-					// Hapus foto user sebelum di update
-					if(file_exists('images/' . $imageProfile['photo']) && $imageProfile['photo']){
-						unlink('images/' . $imageProfile['photo']);
-					}
+			} else {
+				$config['upload_path']          = './images/';
+				$config['encrypt_name']          = TRUE;
+				$config['allowed_types']        = 'jpg|jpeg|png|JPG|PNG|JPEG|pdf';
+				$config['max_size']             = 5000;
+				$config['max_width']            = 10000;
+				$config['max_height']           = 10000;
+
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('userfile'))
+				{
+					$id = $this->input->post('id');
+					$data = [
+						'nip'		=> $this->input->post('nip'),
+						'name'		=> $this->input->post('name'),
+						'username'	=> $this->input->post('username'),
+						'divisi'	=> $this->input->post('divisi'),
+						'email' 	=> $this->input->post('email'),
+						'phone' 	=> $this->input->post('phone')
+					];
+					$this->admin->updateProfile($id, $data);
+					$this->session->set_flashdata('success', 'Data profil berhasil diubah'); 
+					redirect(base_url('petugas/profil'));
 				}
-				$data = [
-					'nip'		=> $this->input->post('nip'),
-					'name'		=> $this->input->post('name'),
-					'username'	=> $this->input->post('username'),
-					'email' 	=> $this->input->post('email'),
-					'phone' 	=> $this->input->post('phone')
-				];
-				// Timpa data foto dengan nama yg baru
-				$data['photo'] = $gambar;
-				$this->admin->updateProfile($id, $data);
-				$this->session->set_flashdata('success', 'Data profil berhasil diubah'); 
-				redirect(base_url('petugas/profil'));
-			}			
+				else
+				{
+					$id = $this->input->post('id');
+					$gambar = $this->upload->data('file_name');
+					if($gambar){
+						// Ambil data user
+						$imageProfile = $this->admin->getDataUser($id);
+						// Hapus foto user sebelum di update
+						if(file_exists('images/' . $imageProfile['photo']) && $imageProfile['photo']){
+							unlink('images/' . $imageProfile['photo']);
+						}
+					}
+					$data = [
+						'nip'		=> $this->input->post('nip'),
+						'name'		=> $this->input->post('name'),
+						'username'	=> $this->input->post('username'),
+						'divisi'	=> $this->input->post('divisi'),
+						'email' 	=> $this->input->post('email'),
+						'phone' 	=> $this->input->post('phone')
+					];
+					// Timpa data foto dengan nama yg baru
+					$data['photo'] = $gambar;
+					$this->admin->updateProfile($id, $data);
+					$this->session->set_flashdata('success', 'Data profil berhasil diubah'); 
+					redirect(base_url('petugas/profil'));
+				}	
+			}		
 		}
 	}
 
@@ -459,15 +467,24 @@ class Petugas extends CI_Controller {
         $user_id = $this->input->post('user_id');
         $id_petugas = $this->input->post('id_petugas');
         $status_pengajuan = $this->input->post('status_pengajuan');
-        $data = [
-            'user_id' => $user_id,
-            'id_petugas' => $id_petugas,
-            'status_progres' => $status_pengajuan,
-            'tanggal_progres' => date('Y-m-d')
-        ];
 
-        $this->pengajuan->addProgressPengajuan($data);
-        redirect(base_url('petugas/all_pengajuan'));
+		if ($user_id=='') {
+			$result['pesan']="user id tidak boleh kosong";
+		} elseif ($id_petugas=='') {
+			$result['pesan']="id petugas tidak boleh kosong";
+		} elseif ($status_pengajuan=='') {
+			$result['pesan']="status pengajuan tidak boleh kosong";
+		} else {
+			$result['pesan']="";
+			$data = [
+				'user_id' => $user_id,
+				'id_petugas' => $id_petugas,
+				'status_progres' => $status_pengajuan,
+				'tanggal_progres' => date('Y-m-d')
+			];
+        	$this->pengajuan->addProgressPengajuan($data);
+		}
+		echo json_encode($result);        
     }
 
 	public function detail_pengajuan_user($id) 

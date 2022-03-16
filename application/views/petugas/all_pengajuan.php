@@ -59,11 +59,11 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="<?= site_url('petugas/tambah_progres_pengajuan') ?>" method="post">
+            <form>
                 <div class="form-group">
                     <input type="hidden"  id="user_id" name="user_id" class="form-control" value="<?= $key['user_id'] ?>">
                     <input type="hidden" id="id_petugas" name="id_petugas" class="form-control" value="<?= $data_user['id_users'] ?>" >
-                    <label>Ubah Status Progres Permohonan</label>
+                    <label>Ubah Status Progres Pengajuan</label>
                     <select class="form-control selectric" id="status_pengajuan" name="status_pengajuan">
                         <option value="Dalam pemeriksaan Customer Service">Dalam pemeriksaan Customer Service</option>
                         <option value="Dalam pemeriksaan Petugas SLIK">Dalam pemeriksaan Petugas SLIK</option>
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" onclick="ubahProgres(<?= $key['user_id'] ?>)" class="btn btn-primary">Save changes</button>
             </div>
         </form>
         </div>
@@ -84,3 +84,42 @@
 </div>
 
 <?php endforeach ?>
+
+<script>
+    function ubahProgres(id) {
+        var id_petugas = $("#id_petugas").val();
+        var status_pengajuan = $('select[name="status_pengajuan"] option:selected').val();
+        var table = $('#tabel_ubah_pengajuan').DataTable();
+        swal({
+            title: 'Apakah anda yakin ?',
+            text: 'Progres pengajuan akan diubah!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "POST",
+                    url : "<?php echo base_url('petugas/tambah_progres_pengajuan') ?>",
+                    data : {
+                        user_id:id,
+                        id_petugas:id_petugas,
+                        status_pengajuan:status_pengajuan
+                    },
+                    datatype: 'json',
+                    success: function(data)
+                    {	
+                        iziToast.success({
+                            title: 'Berhasil!',
+                            message: 'Progres pengajuan berhasil diubah',
+                            position: 'topRight'
+                        });
+                        $("#modal_ubah_pengajuan"+id).modal('hide');				
+                        table.ajax.reload();	
+                    }
+                })
+            }
+        });
+    };
+</script>

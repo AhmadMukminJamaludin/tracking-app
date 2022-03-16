@@ -20,6 +20,18 @@ class Admin extends CI_Controller {
 		$data['total_pengajuan'] = $this->admin->getTotalPengajuan();
 		$data['total_pengajuan_diterima'] = $this->admin->getTotalPengajuanDiterima();
 		$data['total_pengajuan_ditolak'] = $this->admin->getTotalPengajuanDitolak();
+		$data['januari'] = $this->admin->getTotal1();
+		$data['februari'] = $this->admin->getTotal2();
+		$data['maret'] = $this->admin->getTotal3();
+		$data['april'] = $this->admin->getTotal4();
+		$data['mei'] = $this->admin->getTotal5();
+		$data['juni'] = $this->admin->getTotal6();
+		$data['juli'] = $this->admin->getTotal7();
+		$data['agustus'] = $this->admin->getTotal8();
+		$data['september'] = $this->admin->getTotal9();
+		$data['oktober'] = $this->admin->getTotal10();
+		$data['november'] = $this->admin->getTotal11();
+		$data['desember'] = $this->admin->getTotal12();
 		$data['title'] = 'Tracking-APP';
 		$data['page'] = 'admin/dashboard';
 		$this->load->view('template/template_admin', $data);
@@ -39,6 +51,7 @@ class Admin extends CI_Controller {
 		$data['data_user'] = $user;
 		$data['title'] = 'Halaman profil';
 		$data['page'] = 'admin/profil';
+		$data['divisi'] = $this->admin->getAllDivisi();
 		$this->load->view('template/template_admin', $data);
 	}
 
@@ -348,6 +361,7 @@ class Admin extends CI_Controller {
 		$data['title'] = 'Halaman data pengajuan kredit';
 		$data['page'] = 'admin/all_pengajuan';
 		$data['all_pengajuan'] = $this->admin->getAllPengajuan();
+		$data['all_kode_berkas'] = $this->admin->getAllKodeBerkas();
 		$this->load->view('template/template_admin', $data);
 	}
 	
@@ -484,5 +498,197 @@ class Admin extends CI_Controller {
 			redirect(base_url('admin/edit_data_pribadi_nasabah/'.$id));
 		}
 	}
+
+	public function all_berkas()
+	{
+		$id = $this->session->userdata('id_users');
+		$user = $this->admin->getDataUser($id);
+		$data['data_user'] = $user;		
+		$data['title'] = 'Halaman data kode berkas';
+		$data['page'] = 'admin/all_berkas';
+		$this->load->view('template/template_admin', $data);
+	}
+
+	public function data_berkas()
+	{
+		$dataKodeBerkas = $this->admin->getKodeBerkas();
+		echo json_encode($dataKodeBerkas);
+	}
+
+	public function tambah_kode_berkas()
+	{
+		$kode_berkas = $this->input->post('kode_berkas');
+
+		if ($kode_berkas=='') {
+			$result['pesan']="Kode berkas tidak boleh kosong";
+		} else {
+			$result['pesan']="";
+			
+			$data = [
+				'kode_berkas' => $kode_berkas,
+				'qrcode' => $kode_berkas
+			];
+
+			$this->admin->addKodeBerkas($data);
+		}
+		echo json_encode($result);
+	}
+
+	public function hapus_kode_berkas($id)
+	{
+		$this->admin->deleteKodeBerkas($id);
+	}
+
+	public function data_edit_kode_berkas($id)
+	{
+		$getEditKodeBerkas = $this->admin->getEditKodeBerkas($id);
+		echo json_encode($getEditKodeBerkas);
+	}
+
+	public function edit_kode_berkas()
+	{
+		$id = $this->input->post('id_kode_berkas');
+		$kode_berkas = $this->input->post('kode_berkas');
+		if ($kode_berkas=='') {
+			$result['pesan']="Nama divisi tidak boleh kosong";
+		} else {
+			$result['pesan']="";
+			
+			$data = [
+				'kode_berkas' => $kode_berkas,
+				'qrcode' => $kode_berkas
+			];
+
+			$this->admin->editKodeBerkas($id, $data);
+		}
+		echo json_encode($result);
+	}
+
+	public function all_pegawai()
+	{
+		$id = $this->session->userdata('id_users');
+		$user = $this->admin->getDataUser($id);
+		$data['data_user'] = $user;		
+		$data['divisi'] = $this->admin->getAllDivisi();		
+		$data['title'] = 'Halaman data pegawai';
+		$data['page'] = 'admin/all_pegawai';
+		$this->load->view('template/template_admin', $data);
+	}
+
+	public function ambilAllPegawai()
+	{
+		if ($this->input->is_ajax_request() == true) {
+            $list = $this->admin->get_datatables_allPegawai();
+            $data = array();
+            $no = $_POST['start'];
+            foreach ($list as $field) {
+                
+                $no++;
+                $row = array();               
+                $row[] = $no.'.';
+				if (!empty($field->photo)) {
+					$row[] = '<img alt="image" src="'.base_url('images/' . $field->photo).'" class="rounded-circle" width="35" data-toggle="tooltip" title="'.$field->username.'">';
+				} else {
+					$row[] = '<img alt="image" src="'.base_url('assets/img/avatar/avatar-1.png').'" class="rounded-circle" width="35" data-toggle="tooltip" title="'.$field->username.'">';					
+				}
+                $row[] = $field->name;
+                $row[] = $field->username;
+                $row[] = $field->email;
+                $row[] = $field->phone;
+                $row[] = $field->nama_divisi;
+                $row[] = '<a href="#" data-toggle="modal" data-target="#ModalEdit" onclick="getDataEditPegawai('.$field->id_users.')" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Edit</a> <a href="#" onclick="hapusPegawai('.$field->id_users.')" class="btn btn-icon icon-left btn-danger"><i class="fas fa-times"></i> Hapus</a>';
+                $data[] = $row;
+            }
+
+            $output = array(
+                "draw" => $_POST['draw'],
+                "recordsTotal" => $this->admin->count_all(),
+                "recordsFiltered" => $this->admin->count_filtered(),
+                "data" => $data,
+            );
+            //output dalam format JSON
+            echo json_encode($output);
+        } else {
+            exit('Maaf data tidak bisa ditampilkan');
+        }
+	}
+
+	public function tambah_pegawai()
+	{
+		$name = $this->input->post('name');
+		$username = $this->input->post('username');
+		$phone = $this->input->post('phone');
+		$email = $this->input->post('email');
+		$divisi = $this->input->post('divisi');
+		$password = hashEncrypt($this->input->post('password'));
+		if ($name=='') {
+			$result['pesan']="Nama pengguna tidak boleh kosong";
+		} elseif ($username=='') {
+			$result['pesan']="Nama pengguna tidak boleh kosong";
+		} elseif ($phone=='') {
+			$result['pesan']="No. Whatsapp/telepon tidak boleh kosong";
+		} elseif ($email=='') {
+			$result['pesan']="email tidak boleh kosong";
+		} else {
+			$result['pesan']="";
+			
+			$data = [
+				'name' 		=> $name,
+				'username' 	=> $username,
+				'phone' 	=> $phone,
+				'role_id' 	=> 3,
+				'email' 	=> $email,
+				'divisi' 	=> $divisi,
+				'password' => $password,
+				'created_at'=> date('Y-m-d'), 
+			];
+
+			$this->admin->addPegawai($data);
+		}
+		echo json_encode($result);
+	}
 	
+	public function hapus_pegawai($id)
+	{
+		$this->admin->deletePegawai($id);
+	}
+
+	public function data_edit_pegawai($id)
+	{
+		$getEditPegawai = $this->admin->getEditPegawai($id);
+		echo json_encode($getEditPegawai);
+	}
+
+	public function edit_pegawai($di)
+	{
+		$id = $this->input->post('id_users');
+		$name = $this->input->post('name_edit');
+		$username = $this->input->post('username_edit');
+		$phone = $this->input->post('phone_edit');
+		$divisi = $this->input->post('divisi_edit');
+		$email = $this->input->post('email_edit');
+
+		if ($name=='') {
+			$result['pesan']="Nama pengguna tidak boleh kosong";
+		} elseif ($username=='') {
+			$result['pesan']="Nama pengguna tidak boleh kosong";
+		} elseif ($phone=='') {
+			$result['pesan']="No. Whatsapp/telepon tidak boleh kosong";
+		} elseif ($email=='') {
+			$result['pesan']="email tidak boleh kosong";
+		} else {
+			$result['pesan']="";
+			
+			$data = [
+				'name' 		=> $name,
+				'username' 	=> $username,
+				'phone' 	=> $phone,
+				'divisi' 	=> $divisi,
+				'email' 	=> $email,
+			];
+
+			$this->admin->EditPegawai($id, $data);
+		}
+		echo json_encode($result);
+	}
 }

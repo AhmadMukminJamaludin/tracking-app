@@ -66,10 +66,11 @@
                           </div>
                           <div class="form-group col-12">
                             <label>Divisi</label>
-                            <select class="form-control" disabled>
-                              <option>Pilih opsi</option>
-                              <option>Option 2</option>
-                              <option>Option 3</option>
+                            <select class="form-control selectric" name="divisi" disabled>
+                                <option value="">- Pilih Divisi -</option>
+                                  <?php foreach ($divisi as $row) : ?>
+                                      <option value="<?= $row['id_divisi'] ?>" <?php if($data_user['divisi'] == $row['id_divisi']){ print 'selected'; } ?>><?= $row['nama_divisi']?></option>
+                                  <?php endforeach ?>
                             </select>
                           </div>
                         </div>

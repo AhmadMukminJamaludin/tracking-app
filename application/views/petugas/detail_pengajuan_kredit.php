@@ -5,6 +5,27 @@
         <h1>Data Permohonan Kredit</h1>
         </div>
 
+        <div class="col-12">
+                <div class="card">
+                <div class="card-header">
+                    <h4>Kode QR Berkas</h4>
+                    <div class="card-header-action">
+                    <a data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="#"><i class="fas fa-minus"></i></a>
+                    </div>
+                </div>
+                <div class="collapse show" id="mycard-collapse">
+                    <div class="row ">
+                        <div class="col-12 mb-3 d-flex justify-content-center">
+                            <img src="<?php echo base_url('pengajuan/ciqrcode/'. $kode=$data_permohonan_kredit['qrcode']); ?>" alt="" data-toggle="tooltip" title="<?= $data_permohonan_kredit['qrcode'] ?>">
+                        </div>
+                        <div class="col-12 mb-3 d-flex justify-content-center">
+                            <span class="badge badge-info"><?= $data_permohonan_kredit['qrcode'] ?></span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
         <div class="section-body">
         <h2 class="section-title">Data Nasabah</h2>
         <div class="row">

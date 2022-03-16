@@ -417,6 +417,17 @@
                 </div>
             </div>
         </div>
+        <h2 class="section-title">Progres permohonan kredit</h2>
+        <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id='viewer' style={{"width":"1024px","height":"600px","margin":"0 auto"}}></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     </div>
 

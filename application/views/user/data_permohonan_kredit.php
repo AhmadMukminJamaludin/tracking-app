@@ -102,7 +102,7 @@
                             <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jaminan kredit (Jelaskan secara rinci)</label>
                             <div class="col-sm-12 col-md-7">                            
-                                <textarea class="form-control" name="jaminan_kredit" Placeholder="Masukkan Jaminan kredit (Jelaskan secara rinci)"></textarea>
+                                <textarea class="form-control" name="jaminan_kredit" cols="30" rows="5" Placeholder="Masukkan Jaminan kredit (Jelaskan secara rinci)"></textarea>
                             </div>
                             </div>
                             <div class="form-group row mb-4">
@@ -139,6 +139,9 @@
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Scan Berkas <br> (Jadikan berkas dalam satu file)</label>
                             <div class="col-sm-12 col-md-7">                            
                                 <input type="file" class="form-control" name="scan_berkas" Placeholder="">
+                                <small class="form-text text-muted">
+                                    Maksimum ukuran file: 25MB, dengan format file jpg|jpeg|png|JPG|PNG|JPEG|pdf.
+                                </small>
                             </div>
                             </div>
                             <div class="form-group row mb-4">

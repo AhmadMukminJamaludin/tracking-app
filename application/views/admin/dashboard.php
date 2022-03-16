@@ -71,7 +71,7 @@
               <div class="col-12 col-lg-7">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Statistik pengajuan</h4>
+                    <h4>Statistik pengajuan tahun <?= date('Y') ?></h4>
                   </div>
                   <div class="card-body">
                     <canvas id="myChart2"></canvas>
@@ -81,7 +81,7 @@
               <div class="col-12 col-lg-5">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Statistik pengajuan</h4>
+                    <h4>Statistik pengajuan tahun <?= date('Y') ?></h4>
                   </div>
                   <div class="card-body">
                     <canvas id="myChart4"></canvas>

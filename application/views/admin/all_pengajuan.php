@@ -105,9 +105,53 @@
                     <img src="<?php echo base_url('pengajuan/ciqrcode/'. $kode=$key['qrcode']); ?>" alt="" data-toggle="tooltip" title="<?= $key['qrcode'] ?>">
                 </div>
                 <span class="badge badge-info"><?= $key['qrcode'] ?></span>
-            </div>
+                <div class="row d-flex justify-content-center mt-3">
+                    <form action="<?= base_url('pengajuan/ubah_qrcode_pengajuan') ?>" method="post">
+                        <input type="hidden" name="user_id" value="<?= $key['user_id'] ?>">
+                        <select class="form-control selectric" id="kode_berkas" name="kode_berkas">
+                            <option value="">- ganti kode berkas -</option>
+                            <?php foreach ($all_kode_berkas as $row) : ?>
+                            <option value="<?= $row['kode_berkas'] ?>"><?= $row['kode_berkas'] ?></option>
+                            <?php endforeach ?>
+                        </select>                        
+                    </div>     
+                </div>
+                <div class="modal-footer bg-whitesmoke br">   
+                    <button type="submit" class="btn btn-primary">Simpan</button>       
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <?php endforeach ?>
+
+<script>
+    function hapusPengajuan(id) {
+        var table = $('#tabel_all_pengajuan').DataTable();
+        swal({
+            title: 'Apakah anda yakin ?',
+            text: 'Data pengajuan kredit akan dihapus!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url : "<?php echo site_url('pengajuan/hapus_pengajuan/')?>"+id,
+                    type: "POST",
+                    success: function(data)
+                    {	
+                        iziToast.success({
+                            title: 'Berhasil!',
+                            message: 'Data pengajuan berhasil dihapus',
+                            position: 'topRight'
+                        });
+                        table.ajax.reload();						
+                    }
+                })
+            }
+        });
+    };
+</script>

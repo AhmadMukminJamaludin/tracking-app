@@ -19,7 +19,7 @@
                     <?php endif ?>
                   </div>
                   <div class="profile-widget-description">
-                    <div class="profile-widget-name"><?= $data_user['name'] ?> <div class="text-muted d-inline font-weight-normal"></div></div>
+                    <div class="profile-widget-name"><?= $data_user['name'] ?> / <div class="text-muted d-inline font-weight-normal"><?= $data_user['nama_divisi'] ?></div></div>
                   </div>
                 </div>
                 <div class="card">
@@ -66,10 +66,11 @@
                           </div>
                           <div class="form-group col-12">
                             <label>Divisi</label>
-                            <select class="form-control" disabled>
-                              <option>Pilih opsi</option>
-                              <option>Option 2</option>
-                              <option>Option 3</option>
+                            <select class="form-control selectric" name="divisi">
+                                <option value="">- Pilih Divisi -</option>
+                                  <?php foreach ($divisi as $row) : ?>
+                                      <option value="<?= $row['id_divisi'] ?>" <?php if($data_user['divisi'] == $row['id_divisi']){ print 'selected'; } ?>><?= $row['nama_divisi']?></option>
+                                  <?php endforeach ?>
                             </select>
                           </div>
                         </div>
