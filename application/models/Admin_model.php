@@ -279,9 +279,23 @@ class Admin_model extends CI_Model {
         return $this->db->get('data_permohonan_kredit')->num_rows();
     }
 
+    public function getTotalPengajuanDiterimaBulanSekarang()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date('m'),0));
+        $this->db->where('progress', 3);
+        return $this->db->get('data_permohonan_kredit')->num_rows();
+    }
+
     public function getTotalPengajuanDiterima()
     {
         return $this->db->get_where('data_permohonan_kredit', ['progress' => 3])->num_rows();
+    }
+
+    public function getTotalPengajuanDitolakBulanSekarang()
+    {
+        $this->db->where('month(data_permohonan_kredit.created_at)',ltrim(date('m'),0));
+        $this->db->where('progress', 4);
+        return $this->db->get('data_permohonan_kredit')->num_rows();
     }
 
     public function getTotalPengajuanDitolak()

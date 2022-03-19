@@ -267,8 +267,8 @@ var myChart = new Chart(ctx, {
   data: {
     datasets: [{
       data: [
-        <?= $total_pengajuan_diterima ?>,
-        <?= $total_pengajuan_ditolak ?>
+        <?= $total_pengajuan_diterima_bulan_sekarang ?>,
+        <?= $total_pengajuan_ditolak_bulan_sekarang ?>
       ],
       backgroundColor: [
         '#6EBF8B',

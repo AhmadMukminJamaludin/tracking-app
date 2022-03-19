@@ -219,7 +219,7 @@
     labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
     datasets: [{
       label: 'Permohonan',
-      data: [460, 458, 330, 502, 430, 610, 488, 100, 120, 123, 78, 134],
+      data: <?= '['.$januari.','.$februari.','.$maret.','.$april.','.$mei.','.$juni.','.$juli.','.$agustus.','.$september.','.$oktober.','.$november.','.$desember.']' ?>,
       borderWidth: 2,
       backgroundColor: '#6777ef',
       borderColor: '#6777ef',
@@ -240,12 +240,12 @@
         },
         ticks: {
           beginAtZero: true,
-          stepSize: 150
+          stepSize: 5
         }
       }],
       xAxes: [{
         ticks: {
-          display: false
+          display: true
         },
         gridLines: {
           display: false
@@ -261,33 +261,24 @@ var myChart = new Chart(ctx, {
   data: {
     datasets: [{
       data: [
-        80,
-        50,
-        40,
-        30,
-        100,
+        <?= $total_pengajuan_diterima_bulan_sekarang ?>,
+        <?= $total_pengajuan_ditolak_bulan_sekarang ?>
       ],
       backgroundColor: [
-        '#191d21',
-        '#63ed7a',
-        '#ffa426',
-        '#fc544b',
-        '#6777ef',
+        '#6EBF8B',
+        '#D82148',
       ],
       label: 'Dataset 1'
     }],
     labels: [
-      'Black',
-      'Green',
-      'Yellow',
-      'Red',
-      'Blue'
+      'Pengajuan diterima',
+      'Pengajuan ditolak'
     ],
   },
   options: {
     responsive: true,
     legend: {
-      position: 'right',
+      position: 'right'
     },
   }
 });

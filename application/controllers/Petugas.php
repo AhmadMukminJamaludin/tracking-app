@@ -23,6 +23,20 @@ class Petugas extends CI_Controller {
 		$data['total_pengajuan'] = $this->admin->getTotalPengajuan();
 		$data['total_pengajuan_diterima'] = $this->admin->getTotalPengajuanDiterima();
 		$data['total_pengajuan_ditolak'] = $this->admin->getTotalPengajuanDitolak();
+		$data['total_pengajuan_diterima_bulan_sekarang'] = $this->admin->getTotalPengajuanDiterimaBulanSekarang();
+		$data['total_pengajuan_ditolak_bulan_sekarang'] = $this->admin->getTotalPengajuanDitolakBulanSekarang();
+		$data['januari'] = $this->admin->getTotal1();
+		$data['februari'] = $this->admin->getTotal2();
+		$data['maret'] = $this->admin->getTotal3();
+		$data['april'] = $this->admin->getTotal4();
+		$data['mei'] = $this->admin->getTotal5();
+		$data['juni'] = $this->admin->getTotal6();
+		$data['juli'] = $this->admin->getTotal7();
+		$data['agustus'] = $this->admin->getTotal8();
+		$data['september'] = $this->admin->getTotal9();
+		$data['oktober'] = $this->admin->getTotal10();
+		$data['november'] = $this->admin->getTotal11();
+		$data['desember'] = $this->admin->getTotal12();
 		$this->load->view('template/template_petugas', $data);
 	}
 

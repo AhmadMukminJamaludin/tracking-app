@@ -20,6 +20,8 @@ class Admin extends CI_Controller {
 		$data['total_pengajuan'] = $this->admin->getTotalPengajuan();
 		$data['total_pengajuan_diterima'] = $this->admin->getTotalPengajuanDiterima();
 		$data['total_pengajuan_ditolak'] = $this->admin->getTotalPengajuanDitolak();
+		$data['total_pengajuan_diterima_bulan_sekarang'] = $this->admin->getTotalPengajuanDiterimaBulanSekarang();
+		$data['total_pengajuan_ditolak_bulan_sekarang'] = $this->admin->getTotalPengajuanDitolakBulanSekarang();
 		$data['januari'] = $this->admin->getTotal1();
 		$data['februari'] = $this->admin->getTotal2();
 		$data['maret'] = $this->admin->getTotal3();
